@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Game of Life</title>
+  <script src="dist/bundle.js"></script>
+  <script>
+</script>
+</head>
+<body>
+  <canvas id="grid" width="1000" height="500"></canvas>
+  <button onclick="test()">init</button>
+  <button onclick="g.step()">setp</button>
+  <button onclick="g.run()">run</button>
+  <button onclick="g.stop()">stop</button>
+  <button onclick="g.pause()">pause</button>
+  <button onclick="g.resume()">resume</button>
+  <script>
+var options = {
+  margin: 10,
+  colorScheme: {
+    aliveColor: '000000',
+    deadColor: 'efefef',
+    worldColor: 'ffffff'
+  }
+};
+var g=GOL.createGame(document.getElementById('grid'), 50, 100, options);
+function test(){
+  g.init(
+    // (function() {
+    //   var s=[];
+    //   for (var j=0;j<5;j++){
+    //     for (var k=0;k<5;k++){
+    //       for (var i=0;i<20;i++){
+    //         s.push([~~(Math.random()*10)+50*j, ~~(Math.random()*10)+100*k]);
+    //       }
+    //     }
+    //   }
+    //   return s;
+    // })
+    (function() {
+      var s=[];
+      for (var i=0;i<200;i++){
+        s.push([~~(Math.random()*50), ~~(Math.random()*100)]);
+      }
+      return s;
+    })()
+  );
+  g.step();
+}
+  </script>
+
+</body>
+</html>

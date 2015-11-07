@@ -1,0 +1,25 @@
+{
+  "name": "gol.js",
+  "version": "1.0.0",
+  "description": "game of life javascript",
+  "main": "gol.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rimraf dist && mkdir dist",
+    "prebuild": "npm run clean",
+    "build": "webpack && webpack --config webpack.config.min.js"
+  },
+  "keywords": [
+    "game-of-life",
+    "javascript"
+  ],
+  "author": "exoticknight",
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "latest",
+    "babel-core": "latest",
+    "babel-loader": "latest",
+    "babel-preset-es2015": "latest",
+    "webpack": "latest"
+  }
+}
