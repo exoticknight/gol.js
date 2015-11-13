@@ -4,7 +4,7 @@ export default class C {
     this.fillStyle = '#000000';
   }
 
-  setFillStyle ( hex ) {
+  setPenColor ( hex ) {
     this.cxt.fillStyle = this.fillStyle = '#' + hex;
   }
 

@@ -17,7 +17,6 @@
   <button onclick="g.resume()">resume</button>
   <script>
 var options = {
-  margin: 10,
   colorScheme: {
     aliveColor: '000000',
     deadColor: 'efefef',
@@ -38,13 +37,13 @@ function test(){
     //   }
     //   return s;
     // })
-    (function() {
+    +function() {
       var s=[];
       for (var i=0;i<200;i++){
         s.push([~~(Math.random()*50), ~~(Math.random()*100)]);
       }
       return s;
-    })()
+    }()
   );
   g.step();
 }

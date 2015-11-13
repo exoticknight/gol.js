@@ -2,8 +2,8 @@ import Life from './life.js';
 import Grid from './grid.js';
 
 class Game {
-  constructor ( canvas, row, col, margin, colorScheme, gps ) {
-    this.grid = new Grid( canvas, row, col, margin, colorScheme );
+  constructor ( canvas, row, col, displayScheme, colorScheme, gps ) {
+    this.grid = new Grid( canvas, row, col, displayScheme, colorScheme );
     this.life = new Life( row, col );
 
     this.speed = 1000 / gps;
@@ -42,8 +42,8 @@ class Game {
     if ( this.enable ) {
       // run algorithm
       let redrawCells = this.life.nextGeneration();
-
-     this.grid.drawCells( redrawCells );
+      // redraw cells
+      this.grid.drawCells( redrawCells );
     }
   }
 
@@ -72,18 +72,36 @@ export default class GOL {
    * @param {int} col The column of game board
    * @param {object} options Display options
    * @return {Game} game object
+   *
+   * options: {
+   *  displayScheme: {
+   *    borderWidth: 1,
+   *    cellWidth: 10
+   *  },
+   *  colorScheme: {
+   *    aliveColor: '000000',
+   *    deadColor: 'FFFFFF',
+   *    worldColor: 'FFFFFF',
+   *    borderColor: 'FFFFFF'
+   *  },
+   *  gps: 15  // generation per second
+   * }
    */
   static createGame ( canvas, row, col, options ) {
     let param = Object.assign( {
-      margin: 2,
+      displayScheme: {
+        borderWidth: 1,
+        cellWidth: 10
+      },
       colorScheme: {
         aliveColor: '000000',
         deadColor: 'FFFFFF',
-        worldColor: 'FFFFFF'
+        worldColor: 'FFFFFF',
+        borderColor: 'FFFFFF'
       },
       gps: 15
     }, options );
 
-    return new Game( canvas, row, col, param.margin, param.colorScheme, param.gps );
+    return new Game( canvas, row, col, param.displayScheme, param.colorScheme, param.gps );
   }
 }

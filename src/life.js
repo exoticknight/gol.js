@@ -23,14 +23,14 @@ export default class Life {
   }
 
   init ( seeds ) {
-    // for ( let x, y, i = 0, len = seeds.length; i < len && ( [x, y] = seeds[i] ); i++ ) {
-    //   this.aliveAt( x, y );
-    // }
-
-    for ( let i = 0, len = seeds.length; i < len ; i++ ) {
-      let [x, y] = seeds[i] ;
+    for ( let x, y, i = 0, len = seeds.length; i < len && ( [x, y] = seeds[i] ); i++ ) {
       this.changedState[x + ',' + y] = 1;
     }
+
+    // for ( let i = 0, len = seeds.length; i < len ; i++ ) {
+    //   let [x, y] = seeds[i] ;
+    //   this.changedState[x + ',' + y] = 1;
+    // }
   }
 
   _processLife ( x, y, state ) {
@@ -65,8 +65,9 @@ export default class Life {
         let hash = nx + ',' + ny;
         let oldState = this.world[hash];
 
+        // oldState[0] alive or dead, oldState[1] count of neighbour
         if ( oldState ) {  // cell exist before
-          oldState[1] += counter;  // update count of neightbour of current neighbour
+          oldState[1] += counter;  // update count of neighbour of current neighbour
 
           if ( oldState[0] ) {
             aliveNeighBours++;
@@ -74,7 +75,7 @@ export default class Life {
         } else {  // new dead cell, only happens when a cell next by is alive
           oldState = this.world[hash] = [0, 1];
         }
-        // what will happen to current neighbu=our
+        // destiny of current neighbour
         switch ( oldState[1] ) {
           case 8:
           case 7:
@@ -94,7 +95,7 @@ export default class Life {
       }
     }
 
-    // check state of current cell
+    // destiny of current cell
     this.world[currentCellHash][1] = aliveNeighBours;
     switch ( aliveNeighBours ) {
       case 8:
