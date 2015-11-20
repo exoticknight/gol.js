@@ -54,23 +54,19 @@ export default class Game {
   }
 
   _setupLinsteners () {
-    let _onMouseDown = this._boundMethod["_onMouseDown"] = e => this._onMouseDown(  e );
-    let _onMouseMove = this._boundMethod["_onMouseMove"] = e => this._onMouseMove( e );
-    let _onMouseUp = this._boundMethod["_onMouseUp"] = e => this._onMouseUp( e );
+    this._boundMethod['_onMouseDown'] = e => this._onMouseDown(  e );
+    this._boundMethod['_onMouseMove'] = e => this._onMouseMove( e );
+    this._boundMethod['_onMouseUp'] = e => this._onMouseUp( e );
 
-    this.grid.on( 'mousedown', _onMouseDown );
-    this.grid.on( 'mousemove', _onMouseMove );
-    this.grid.on( 'mouseup', _onMouseUp );
+    this.grid.on( 'mousedown', this._boundMethod['_onMouseDown'] );
+    this.grid.on( 'mousemove', this._boundMethod['_onMouseMove'] );
+    this.grid.on( 'mouseup', this._boundMethod['_onMouseUp'] );
   }
 
   _teardownLinsteners () {
-    let _onMouseDown = this._boundMethod["_onMouseDown"];
-    let _onMouseMove = this._boundMethod["_onMouseMove"];
-    let _onMouseUp = this._boundMethod["_onMouseUp"];
-
-    this.grid.off( 'mousedown', _onMouseDown );
-    this.grid.off( 'mousemove', _onMouseMove );
-    this.grid.off( 'mouseup', _onMouseUp );
+    this.grid.off( 'mousedown', this._boundMethod['_onMouseDown'] );
+    this.grid.off( 'mousemove', this._boundMethod['_onMouseMove'] );
+    this.grid.off( 'mouseup', this._boundMethod['_onMouseUp'] );
   }
 
   init ( x ) {
