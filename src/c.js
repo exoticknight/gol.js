@@ -1,7 +1,9 @@
 export default class C {
   constructor ( ele ) {
     this.cxt = ele.getContext( '2d' );
-    this.fillStyle = '#000000';
+    this.fillStyle = '000000';
+    this.left = ele.getBoundingClientRect().left;
+    this.top = ele.getBoundingClientRect().top;
   }
 
   setPenColor ( hex ) {
