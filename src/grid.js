@@ -2,6 +2,7 @@ import C from './c.js';
 
 export default class Grid {
   constructor ( canvas, row, col, displayScheme, colorScheme ) {
+    this.view = canvas;
     this.canvas = new C( canvas );
 
     this.row = row;
@@ -14,6 +15,26 @@ export default class Grid {
     this.drawWorld();
   }
 
+  on ( event, handler ) {
+    this.view.addEventListener( event, handler, false );
+  }
+
+  off ( event, handler ) {
+    this.view.removeEventListener( event, handler );
+  }
+
+  getXFromPixel ( pixel ) {
+    let d = this.displayScheme.borderWidth + this.displayScheme.cellWidth;
+    let x = ~~( ( pixel - this.canvas.left ) / d );
+    return x % d <= this.displayScheme.cellWidth ? x : -1;
+  }
+
+  getYFromPixel ( pixel ) {
+    let d = this.displayScheme.borderWidth + this.displayScheme.cellWidth;
+    let y = ~~( ( pixel - this.canvas.top ) / d );
+    return y % d <= this.displayScheme.cellWidth ? y : -1;
+  }
+
   drawWorld () {
     this.canvas.setPenColor( this.colorScheme.worldColor );
     this.canvas.drawRect( 0, 0,
@@ -24,21 +45,23 @@ export default class Grid {
   drawCells( redrawCells ) {
     // draw alive cells
     this.canvas.setPenColor( this.colorScheme.aliveColor );
-    for ( let x, y, i = 0, len = redrawCells[1].length; i < len && ( [x, y] = redrawCells[1][i] ); i++ ) {
+    for ( let x, y, i = 0, len = redrawCells[1].length; i < len; i++ ) {
+      [x, y] = redrawCells[1][i];
       this.drawCellAt( x, y );
     }
 
     // draw dead cells
     this.canvas.setPenColor( this.colorScheme.deadColor );
-    for ( let x, y, i = 0, len = redrawCells[0].length; i < len && ( [x, y] = redrawCells[0][i] ); i++ ) {
+    for ( let x, y, i = 0, len = redrawCells[0].length; i < len; i++ ) {
+      [x, y] = redrawCells[0][i];
       this.drawCellAt( x, y );
     }
   }
 
   drawCellAt ( x, y ) {
     this.canvas.drawRect(
-      y * ( this.displayScheme.borderWidth + this.displayScheme.cellWidth ),
       x * ( this.displayScheme.borderWidth + this.displayScheme.cellWidth ),
+      y * ( this.displayScheme.borderWidth + this.displayScheme.cellWidth ),
       this.displayScheme.cellWidth,
       this.displayScheme.cellWidth );
   }
