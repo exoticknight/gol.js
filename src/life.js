@@ -17,20 +17,18 @@ export default class Life {
     this.world = {};
     /*
      * '0,0':  // 'x,y'
-     * 1  // to be alive 1, to be dead 0
+     * 1  // to be alive 1, to be dead -1, 0 not change
      */
     this.changedState = {};
   }
 
   init ( seeds ) {
-    for ( let x, y, i = 0, len = seeds.length; i < len && ( [x, y] = seeds[i] ); i++ ) {
-      this.changedState[x + ',' + y] = 1;
+    for ( let x, y, i = 0, len = seeds.length; i < len; i++ ) {
+      [x, y] = seeds[i];
+      if ( 0 <= x && x < this.column && 0 <= y && y < this.row ) {
+        this.changedState[x + ',' + y] = 1;
+      }
     }
-
-    // for ( let i = 0, len = seeds.length; i < len ; i++ ) {
-    //   let [x, y] = seeds[i] ;
-    //   this.changedState[x + ',' + y] = 1;
-    // }
   }
 
   _processLife ( x, y, state ) {
@@ -61,7 +59,7 @@ export default class Life {
     for ( let i = 0; i < 8; i++ ) {
       let [nx, ny] = neighbours[i];
 
-      if ( 0 <= nx && nx < this.row && 0 <= ny && ny < this.column ) {
+      if ( 0 <= nx && nx < this.column && 0 <= ny && ny < this.row ) {
         let hash = nx + ',' + ny;
         let oldState = this.world[hash];
 
@@ -84,12 +82,13 @@ export default class Life {
           case 4:
           case 1:
           case 0:
-            oldState[0] && ( this.changedState[hash] = 0 );  // if alive, then to be dead
+            this.changedState[hash] = -1;  // if alive, then to be dead
             break;
           case 3:
-            !oldState[0] && ( this.changedState[hash] = 1 );  // if dead, then to be alive
+            this.changedState[hash] = 1;  // if dead, then to be alive
             break;
           case 2:
+            this.changedState[hash] = 0;
             break;
         }
       }
@@ -105,12 +104,13 @@ export default class Life {
       case 4:
       case 1:
       case 0:
-        this.world[currentCellHash][0] && ( this.changedState[currentCellHash] = 0 );  // if alive, then to be dead
+        this.changedState[currentCellHash] = -1;  // if alive, then to be dead
         break;
       case 3:
-        !this.world[currentCellHash][0] && ( this.changedState[currentCellHash] = 1 );  // if dead, then to be alive
+        this.changedState[currentCellHash] = 1;  // if dead, then to be alive
         break;
       case 2:
+        this.changedState[currentCellHash] = 0;
         break;
     }
   }
@@ -121,6 +121,10 @@ export default class Life {
 
   killAt ( x, y ) {
     this._processLife( x, y, false );
+  }
+
+  isAlive( x, y ) {
+    return this.world[x + ',' + y] && this.world[x + ',' + y][0];
   }
 
   nextGeneration () {
@@ -135,10 +139,10 @@ export default class Life {
     for ( let key in state ) {
       let [x, y] = key.split( ',' ).map( x => parseInt( x ) );
 
-      if ( state[key] ) {
+      if ( state[key] === 1 && ( !this.world[key] || this.world[key][0] === 0 ) ) {
         this.aliveAt( x, y );
         changedCells[1].push( [x, y] );
-      } else {
+      } if ( state[key] === -1 && this.world[key][0] === 1 ) {
         this.killAt( x, y );
         changedCells[0].push( [x, y] );
       }
