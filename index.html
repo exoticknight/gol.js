@@ -25,15 +25,6 @@ var options = {
 };
 var g=GOL.createGame(document.getElementById('grid'), 50, 100, options);
 function test(){
-  // g.init(
-  //   (function() {
-  //     var s=[];
-  //     for (var i=0;i<200;i++){
-  //       s.push([~~(Math.random()*100), ~~(Math.random()*50)]);
-  //     }
-  //     return s;
-  //   })()
-  // );
   g.init([[10,10],[11,10],[10,11],[13,12],[12,13],[13,13]]);
   g.step();
 }
